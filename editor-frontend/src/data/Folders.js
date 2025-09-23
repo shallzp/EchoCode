@@ -1,4 +1,4 @@
-const folders = {
+const folders_data = {
     id: 1,
     title: 'Data Structures & Algorithms',
     files: [
@@ -26,4 +26,4 @@ const folders = {
     ]
 };
 
-export default folders;
+export default folders_data;

@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Code, FolderPlus, Search, Clock } from 'lucide-react'
 
 import { getLanguageConfig } from '../config/Language'
+import folders_data from '../data/Folders'
 
 import FolderUI from './FolderUI';
 import AddFolder from './AddFolder';
@@ -12,27 +13,7 @@ const Home = ({ theme, isDarkMode }) => {
   const langConfig = getLanguageConfig(isDarkMode, theme)
 
   const [folders, setFolders] = useState([
-    {
-      id: 1,
-      title: 'Data Structures & Algorithms',
-      files: [
-        { id: 1, 
-          name: 'Binary Heap Implementation', 
-          language: 'java',
-          code: 'public class HelloWorld {\n\tpublic static void main(String[] args) {\n\t\tSystem.out.println("Hello, World!");\n\t}\n}',
-          lastModified: '1 week ago' },
-        { id: 2, 
-          name: 'Graph Traversal Algorithms', 
-          language: 'cpp', 
-          code: '#include <iostream>\nusing namespace std;\n\nint main() {\n\tcout << "Hello, World!" << endl;\n\treturn 0;\n}',
-          lastModified: '1 day ago' },
-        { id: 3, 
-          name: 'Dynamic Programming Solutions', 
-          language: 'python',
-          code: 'print("Hello, World!")', 
-          lastModified: '3 days ago' }
-      ]
-    }
+    folders_data
   ]);
 
   const [currentFolderId, setCurrentFolderId] = useState(null);
