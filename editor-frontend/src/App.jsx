@@ -6,6 +6,7 @@ import { getTheme } from './theme/Theme'
 import BoxUI from './Components/BoxUI';
 import Home from './Components/Home';
 import Editor from './Components/Editor';
+import { FileProvider } from './Providers/FileProvider';
 
 function App() {
 
@@ -17,40 +18,42 @@ function App() {
 
   return (
 
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={
-          <BoxUI 
-            theme={theme}
-            isDarkMode={isDarkMode}
-            setIsDarkMode={setIsDarkMode}
-            isHome={isHome}
-            setIsHome={setIsHome} //true
-            isEditor={isEditor} >
-
-            <Home 
+    <FileProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={
+            <BoxUI 
               theme={theme}
               isDarkMode={isDarkMode}
-            />
+              setIsDarkMode={setIsDarkMode}
+              isHome={isHome}
+              setIsHome={setIsHome} //true
+              isEditor={isEditor} >
 
-          </BoxUI>
-        } />
+              <Home 
+                theme={theme}
+                isDarkMode={isDarkMode}
+              />
 
-        <Route path="/editor" element={
-          <BoxUI 
-            theme={theme}
-            isDarkMode={isDarkMode}
-            setIsDarkMode={setIsDarkMode}
-            isHome={!isHome}
-            setIsHome={setIsHome}  //false
-            isEditor={!isEditor} >
+            </BoxUI>
+          } />
 
-            <Editor theme={theme}/>
+          <Route path="/editor" element={
+            <BoxUI 
+              theme={theme}
+              isDarkMode={isDarkMode}
+              setIsDarkMode={setIsDarkMode}
+              isHome={!isHome}
+              setIsHome={setIsHome}  //false
+              isEditor={!isEditor} >
 
-          </BoxUI>
-        } />
-      </Routes>
-    </BrowserRouter>
+              <Editor theme={theme}/>
+
+            </BoxUI>
+          } />
+        </Routes>
+      </BrowserRouter>
+    </FileProvider>
   )
 }
 
