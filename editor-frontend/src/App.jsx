@@ -3,10 +3,11 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import { getTheme } from './theme/Theme'
 
-import BoxUI from './Components/BoxUI';
-import Home from './Components/Home';
-import Editor from './Components/Editor';
-import { FileProvider } from './Providers/FileProvider';
+import EditorProvider from './provider/EditorProvider';
+
+import BoxUI from './components/BoxUI';
+import Home from './components/Home';
+import Editor from './components/Editor';
 
 function App() {
 
@@ -18,7 +19,7 @@ function App() {
 
   return (
 
-    <FileProvider>
+    <EditorProvider>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={
@@ -53,7 +54,7 @@ function App() {
           } />
         </Routes>
       </BrowserRouter>
-    </FileProvider>
+    </EditorProvider>
   )
 }
 

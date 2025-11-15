@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { FolderOpen, Folder, Plus, Trash2 } from 'lucide-react';
 
-import FileCard from '../Components/FileCard';
+import FileCard from './FileCard';
 
 const FolderUI = ({ theme, languageConfig, folder, onDeleteFolder, onAddFile, onDeleteFile, onEditFile }) => {
 

@@ -1,8 +1,8 @@
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import { Code, FolderPlus, Search, Clock } from 'lucide-react'
 
 import { getLanguageConfig } from '../config/Language'
-import folders_data from '../data/Folders'
+import { EditorContext } from '../provider/EditorProvider';
 
 import FolderUI from './FolderUI';
 import AddFolder from './AddFolder';
@@ -10,11 +10,11 @@ import FileModal from './FileModal';
 
 const Home = ({ theme, isDarkMode }) => {
 
+  const folders_data = useContext(EditorContext);
+
   const langConfig = getLanguageConfig(isDarkMode, theme)
 
-  const [folders, setFolders] = useState([
-    folders_data
-  ]);
+  const [folders, setFolders] = useState(folders_data);
 
   const [currentFolderId, setCurrentFolderId] = useState(null);
   const [editingFile, setEditingFile] = useState(null);
