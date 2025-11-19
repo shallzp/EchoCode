@@ -3,7 +3,7 @@ import { FolderOpen, Folder, Plus, Trash2, Pencil } from 'lucide-react';
 
 import FileCard from './FileCard';
 
-const FolderUI = ({ theme, languageConfig, folder, onEdit, onDelete, onAddFile, onDeleteFile, onEditFile }) => {
+const FolderCard = ({ theme, languageConfig, folder, onEdit, onDelete, onAddFile, onDeleteFile, onEditFile }) => {
 
   const [isExpanded, setIsExpanded] = useState(true);
 
@@ -86,4 +86,4 @@ const FolderUI = ({ theme, languageConfig, folder, onEdit, onDelete, onAddFile, 
   )
 }
 
-export default FolderUI;
+export default FolderCard;

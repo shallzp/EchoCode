@@ -4,7 +4,7 @@ import { Code, FolderPlus, Search, Clock } from 'lucide-react'
 import { getLanguageConfig } from '../config/Language'
 import { EditorContext } from '../provider/EditorProvider';
 
-import FolderUI from './FolderUI';
+import FolderCard from './FolderCard';
 import FolderModal from './FolderModal';
 import FileModal from './FileModal';
 
@@ -163,7 +163,7 @@ const {
             <div className="grid grid-cols-1 gap-3">
               <div className="flex flex-col gap-4">
                 {filteredFolders.map(folder => (
-                  <FolderUI
+                  <FolderCard
                     theme={theme}
                     languageConfig={langConfig}
                     key={folder.id}
