@@ -1,28 +1,6 @@
-import { useState } from 'react'
 import { Plus } from 'lucide-react'
 
-const AddFolder = ({ theme, isOpen, onClose, onSubmit }) => {
-
-  const [folderName, setFolderName] = useState('');
-
-  const handleSubmit = () => {
-    if (folderName.trim()) {
-      onSubmit({
-        folderName: folderName.trim(),
-      });
-
-      // Reset form
-      setFolderName('');
-    }
-  };
-
-  const handleKeyPress = (e) => {
-    if (e.key === 'Enter') {
-      handleSubmit();
-    }
-  };
-  
-  if (!isOpen) return null;
+const CreateFileModal = () => {
 
   return (
     <div className='fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-in fade-in duration-200'>
@@ -33,21 +11,35 @@ const AddFolder = ({ theme, isOpen, onClose, onSubmit }) => {
           </div>
             
           <h2 className={`text-2xl font-bold ${theme.text} mb-2`}>
-            Create New Folder
+            {editingFile ? 'Edit File' : 'Create New File'}
           </h2>
+          
+          <p className={theme.textMuted}>in {folderName}</p>
         </div>
 
         <div className='space-y-6'>
           <div>
-              <label className={`block text-sm font-semibold ${theme.text} mb-2`}>Folder Name</label>
+              <label className={`block text-sm font-semibold ${theme.text} mb-2`}>File Name</label>
                 
               <input 
                 type="text"
-                value={folderName}
-                onChange={(e) => setFolderName(e.target.value)}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
                 className={`w-full px-4 py-3 ${theme.surface} ${theme.border} border-2 rounded-xl focus:outline-none focus:border-blue-500 transition-colors ${theme.text}`}
-                onKeyPress={handleKeyPress}
+                onKeyPress={(e) => e.key === 'Enter' && handleSave()}
               />
+          </div>
+
+          <div>
+            <label className={`block text-sm font-semibold ${theme.text} mb-2`}>Programming Language</label>
+    
+            <select>
+              <option value="cpp">C++</option>
+              <option value="java">Java</option>
+              <option value="javascript">JavaScript</option>
+              <option value="typescript">TypeScript</option>
+              <option value="python">Python</option>
+            </select>
           </div>
         </div>
 
@@ -58,10 +50,9 @@ const AddFolder = ({ theme, isOpen, onClose, onSubmit }) => {
             Cancel
           </button>
           <button
-            onClick={handleSubmit}
-            disabled={!folderName.trim()}
+            onClick={handleSave}
             className={`flex-1 px-6 py-3 bg-gradient-to-r ${theme.gradient} text-white rounded-xl font-medium ${theme.shadowLg} transition-all duration-200 hover:scale-105`}>
-            Create Folder
+            {editingFile ? 'Update' : 'Create'} File
           </button>
         </div>
       </div>
@@ -69,4 +60,4 @@ const AddFolder = ({ theme, isOpen, onClose, onSubmit }) => {
   )
 }
 
-export default AddFolder
+export default CreateFileModal

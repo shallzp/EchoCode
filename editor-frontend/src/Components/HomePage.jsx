@@ -5,103 +5,74 @@ import { getLanguageConfig } from '../config/Language'
 import { EditorContext } from '../provider/EditorProvider';
 
 import FolderUI from './FolderUI';
-import AddFolder from './AddFolder';
+import FolderModal from './FolderModal';
 import FileModal from './FileModal';
 
-const Home = ({ theme, isDarkMode }) => {
-
-  const folders_data = useContext(EditorContext);
+const HomePage = ({ theme, isDarkMode }) => {
+const {
+    folders, addFolder, editFolder, deleteFolder,
+    addFile, editFile, deleteFile,
+    currentFolderId, setCurrentFolderId,
+    editingFolder, setEditingFolder,
+    editingFile, setEditingFile,
+  } = useContext(EditorContext);
 
   const langConfig = getLanguageConfig(isDarkMode, theme)
 
-  const [folders, setFolders] = useState(folders_data);
-
-  const [currentFolderId, setCurrentFolderId] = useState(null);
-  const [editingFile, setEditingFile] = useState(null);
-
-  const [openAddFolder, setOpenAddFolder] = useState(false);
+  const [openFolderModal, setOpenFolderModal] = useState(false);
   const [openFileModal, setOpenFileModal] = useState(false);
-
   const [searchTerm, setSearchTerm] = useState('');
 
   const filteredFolders = folders.filter(folder =>
     folder.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // Folder Operations  
-  const addFolder = (newFolderName) => {
-    if (newFolderName.trim()) {
-      const newFolder = {
-        id: Date.now(),
-        title: newFolderName.trim(),
-        files: []
-      };
-      setFolders([...folders, newFolder]);
-      // setNewFolderName('');
+  // Folder modal handlers
+  const handleAddFolder = () => {
+    setEditingFolder(null);
+    setOpenFolderModal(true);
+  };
+
+  const handleEditFolder = (folder) => {
+    setEditingFolder(folder);
+    setOpenFolderModal(true);
+  };
+
+  const handleSaveFolder = ({ folderName }) => {
+    if (!editingFolder) {
+      addFolder(folderName);
+    } else {
+      editFolder(editingFolder.id, folderName);
     }
+    setOpenFolderModal(false);
+    setEditingFolder(null);
   };
 
-  const deleteFolder = (folderId) => {
-    setFolders(folders.filter(folder => folder.id !== folderId));
-  };
 
-  // File Operations
-  const addFile = (folderId) => {
+
+  // File modal handlers
+  const handleAddFile = folderId => {
     setCurrentFolderId(folderId);
     setEditingFile(null);
     setOpenFileModal(true);
   };
 
-  const editFile = (folderId, file) => {
+  const handleEditFile = (folderId, file) => {
     setCurrentFolderId(folderId);
     setEditingFile(file);
     setOpenFileModal(true);
   };
 
-  const saveFile = (fileData) => {
-    setFolders(folders.map(folder => {
-      if (folder.id === currentFolderId) {
-        if (editingFile) {
-          return {
-            ...folder,
-            files: folder.files.map(file =>
-              file.id === editingFile.id
-                ? { ...file, ...fileData }
-                : file
-            )
-          };
-        } else {
-          const newFile = {
-            id: Date.now(),
-            ...fileData
-          };
-          return {
-            ...folder,
-            files: [...folder.files, newFile]
-          };
-        }
-      }
-      return folder;
-    }));
-
+  const handleSaveFile = fileData => {
+    if (editingFile) {
+      editFile(currentFolderId, editingFile.id, fileData);
+    } else {
+      addFile(currentFolderId, fileData);
+    }
     setOpenFileModal(false);
     setCurrentFolderId(null);
     setEditingFile(null);
   };
-
-  const deleteFile = (folderId, fileId) => {
-    setFolders(folders.map(folder => {
-      if (folder.id === folderId) {
-        return {
-          ...folder,
-          files: folder.files.filter(file => file.id !== fileId)
-        };
-      }
-      return folder;
-    }));
-  };
-
-  const currentFolder = folders.find(f => f.id === currentFolderId);
 
   return (
     <div className='h-full flex-1 flex overflow-hidden'>
@@ -122,7 +93,7 @@ const Home = ({ theme, isDarkMode }) => {
 
           <div className="space-y-3">
             <button 
-              onClick={() => setOpenAddFolder(true)}
+              onClick={() => setOpenFolderModal(true)}
               className={`w-full px-8 py-4 bg-gradient-to-r ${theme.gradient} text-white rounded xl font-semibold hover:bg-gradient-to-r hover:${theme.gradientHover} transition-all duration-200 shadow-lg hover:shadow-xl flex items-center justify-center space-x-2`}>
               <FolderPlus size={20} />
               <span>Create New Folder</span>
@@ -132,15 +103,14 @@ const Home = ({ theme, isDarkMode }) => {
       </div>
 
       <>
-        {openAddFolder && (
-          <AddFolder
+        {openFolderModal && (
+          <FolderModal
             theme={theme}
-            isOpen={openAddFolder}
-            onClose={() => setOpenAddFolder(false)}
-            onSubmit={(data) => {
-            addFolder(data.folderName);
-            setOpenAddFolder(false);
-          }} />
+            isOpen={openFolderModal}
+            onClose={() => setOpenFolderModal(false)}
+            onSave={handleSaveFolder}
+            editingFolder={editingFolder}
+          />
         )}
       </>
 
@@ -150,9 +120,8 @@ const Home = ({ theme, isDarkMode }) => {
             theme={theme}
             isOpen={openFileModal}
             onClose={() => setOpenFileModal(false)}
-            onSave={saveFile}
+            onSave={handleSaveFile}
             editingFile={editingFile}
-            folderName={currentFolder ? currentFolder.title : ''}
           />
         )}
       </>
@@ -164,7 +133,7 @@ const Home = ({ theme, isDarkMode }) => {
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-2xl font-bold">My Workspace</h2>
             <button 
-              onClick={() => setOpenAddFolder(true)}
+              onClick={handleAddFolder}
               className={`px-4 py-2 ${theme.accent} text-white rounded-lg ${theme.accentHover} transition-colors flex items-center space-x-2`}>
               <FolderPlus size={16} />
               <span>New Folder</span>
@@ -199,10 +168,11 @@ const Home = ({ theme, isDarkMode }) => {
                     languageConfig={langConfig}
                     key={folder.id}
                     folder={folder}
-                    onDeleteFolder={deleteFolder}
-                    onAddFile={addFile}
+                    onEdit={() => handleEditFolder(folder)}
+                    onDelete={() => deleteFolder(folder.id)}
+                    onAddFile={() => handleAddFile(folder.id)}
+                    onEditFile={handleEditFile}
                     onDeleteFile={deleteFile}
-                    onEditFile={editFile}
                   />
                 ))}
               </div>
@@ -215,4 +185,4 @@ const Home = ({ theme, isDarkMode }) => {
   )
 }
 
-export default Home
+export default HomePage;

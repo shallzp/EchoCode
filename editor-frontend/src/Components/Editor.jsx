@@ -1,13 +1,30 @@
-import React, { useState } from "react"
+import { useState } from "react"
 import { useNavigate } from "react-router-dom";
 import { FileText, Plus, Code, Star, Clock, Trash2, Edit3, Play, Save, Download, 
   Upload, Maximize, Copy, Terminal, Eye, EyeOff, RefreshCw, ArrowLeft, HomeIcon } from "lucide-react";
+
+// import FileModal from './FileModal';
 
 const Editor = ({ theme }) => {
 
   const navigate = useNavigate();
 
   const [showLineNumbers, setShowLineNumbers] = useState(true);
+
+  // const [openFileModal, setOpenFileModal] = useState(false);
+  // const [editingFile, setEditingFile] = useState(null);
+
+  // const handleEditFile = (file) => {
+  //   setEditingFile(file);
+  //   setOpenFileModal(true);
+  // };
+
+  // const handleSaveFile = (updatedFile) => {
+  // You’ll place your logic here to update file name in state (or context)
+  //   setOpenFileModal(false);
+  //   setEditingFile(null);
+  // };
+
 
   const sampleCode = `#include <iostream>
 using namespace std;
@@ -22,6 +39,18 @@ int main(){
 
   return (
     <div className="h-full flex-1 flex flex-col">
+      {/* <>
+        {openFileModal && (
+          <FileModal 
+            isOpen={openFileModal}
+            onClose={() => setOpenFileModal(false)}
+            editingFile={editingFile}
+            onSave={handleSaveFile}
+            theme={theme}
+          />
+        )}
+      </> */}
+
       {/* Header Controls */}
       <div className={`${theme.surface} ${theme.border} border-b px-6 py-4`}>
         <div className="flex items-center justify-between">
@@ -34,7 +63,7 @@ int main(){
 
             <div className="flex items-center space-x-2">
               <FileText size={20} className="text-blue-500" />
-              <h2 className="text-lg font-semibold">HelloWorld.cpp</h2>
+              <h2 className="text-lg font-semibold" onDoubleClick={() => handleEditFile({ id: 1, name: "HelloWorld.cpp" })}>HelloWorld.cpp</h2>
             </div>
 
             <button className={`px-3 py-1 ${theme.accent} text-white rounded-lg text-sm font-medium transition-colors ${theme.accentHover}`}>

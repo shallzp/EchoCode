@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { Code, Sun, Moon, Settings, Coffee, Home } from "lucide-react";
 
-const BoxUI = ({ theme, isHome, isEditor, isDarkMode, setIsDarkMode, children }) => {
+const BoxUI = ({ theme, isHome, isDarkMode, setIsDarkMode, children }) => {
   
   const navigate = useNavigate();
 
@@ -32,7 +32,7 @@ const BoxUI = ({ theme, isHome, isEditor, isDarkMode, setIsDarkMode, children })
           </div>
 
           <div className="flex items-center space-x-2">
-            {isEditor && (
+            {!isHome && (
               <button 
                 onClick={() => navigate("/")}
                 className={`p-2 rounded-lg ${theme.textMuted} hover:${theme.text} transition-colors`}>

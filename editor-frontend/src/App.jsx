@@ -6,14 +6,13 @@ import { getTheme } from './theme/Theme'
 import EditorProvider from './provider/EditorProvider';
 
 import BoxUI from './components/BoxUI';
-import Home from './components/Home';
+import HomePage from './components/HomePage';
 import Editor from './components/Editor';
 
 function App() {
 
   const [isDarkMode, setIsDarkMode] = useState(false)
   const [isHome, setIsHome] = useState(true)
-  const [isEditor, setIsEditor] = useState(false)
 
   const theme = getTheme(isDarkMode) 
 
@@ -29,9 +28,9 @@ function App() {
               setIsDarkMode={setIsDarkMode}
               isHome={isHome}
               setIsHome={setIsHome} //true
-              isEditor={isEditor} >
+            >
 
-              <Home 
+              <HomePage 
                 theme={theme}
                 isDarkMode={isDarkMode}
               />
@@ -46,7 +45,7 @@ function App() {
               setIsDarkMode={setIsDarkMode}
               isHome={!isHome}
               setIsHome={setIsHome}  //false
-              isEditor={!isEditor} >
+            >
 
               <Editor theme={theme}/>
 

@@ -23,7 +23,7 @@ const FileCard = ({ theme, languageConfig, file, onDelete, onEdit }) => {
             <div className={`${theme.textMuted} flex items-center space-x-2 text-sm`}>
               <span className={theme.textMuted}>{file.language}</span>
               <span className={theme.textMuted}>•</span>
-              <span className={theme.textMuted}>{file.lastModified}</span>
+              <span className={theme.textMuted}>{file.lastModified?.toString()}</span>
             </div>
           </div>
         </div>

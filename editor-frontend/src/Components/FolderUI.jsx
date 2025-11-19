@@ -1,9 +1,9 @@
 import { useState } from 'react'
-import { FolderOpen, Folder, Plus, Trash2 } from 'lucide-react';
+import { FolderOpen, Folder, Plus, Trash2, Pencil } from 'lucide-react';
 
 import FileCard from './FileCard';
 
-const FolderUI = ({ theme, languageConfig, folder, onDeleteFolder, onAddFile, onDeleteFile, onEditFile }) => {
+const FolderUI = ({ theme, languageConfig, folder, onEdit, onDelete, onAddFile, onDeleteFile, onEditFile }) => {
 
   const [isExpanded, setIsExpanded] = useState(true);
 
@@ -27,6 +27,12 @@ const FolderUI = ({ theme, languageConfig, folder, onDeleteFolder, onAddFile, on
 
           <div className="flex items-center space-x-3">
             <button
+              onClick={() => onEdit(folder)}
+              className="flex items-center space-x-2 bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white px-4 py-2 rounded-xl transition-all duration-200 hover:scale-105"
+            >
+              <Pencil className='w-5 h-5' />
+            </button>
+            <button
               onClick={() => onAddFile(folder.id)}
               className="flex items-center space-x-2 bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white px-4 py-2 rounded-xl transition-all duration-200 hover:scale-105"
             >
@@ -34,7 +40,7 @@ const FolderUI = ({ theme, languageConfig, folder, onDeleteFolder, onAddFile, on
               <span className="font-medium">New File</span>
             </button>
             <button
-              onClick={() => onDeleteFolder(folder.id)}
+              onClick={() => onDelete(folder.id)}
               className="p-2 bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white rounded-xl transition-all duration-200 hover:scale-105"
               title="Delete folder"
             >
@@ -80,4 +86,4 @@ const FolderUI = ({ theme, languageConfig, folder, onDeleteFolder, onAddFile, on
   )
 }
 
-export default FolderUI
+export default FolderUI;
