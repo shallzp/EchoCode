@@ -1,11 +1,13 @@
 import { useState } from 'react'
 import { FolderOpen, Folder, Plus, Trash2, Pencil } from 'lucide-react';
+import { useTheme } from '../provider/ThemeProvider';
 
 import FileCard from './FileCard';
 
-const FolderCard = ({ theme, languageConfig, folder, onEdit, onDelete, onAddFile, onDeleteFile, onEditFile }) => {
+const FolderCard = ({ languageConfig, folder, onEdit, onDelete, onClickFile, onAddFile, onDeleteFile, onEditFile }) => {
 
   const [isExpanded, setIsExpanded] = useState(true);
+  const { theme } = useTheme();
 
   return (
     <div className={`${theme.surface} rounded-2xl ${theme.shadowLg} ${theme.border} border overflow-hidden hover:shadow-xl transition-shadow duration-300`}>
@@ -71,10 +73,10 @@ const FolderCard = ({ theme, languageConfig, folder, onEdit, onDelete, onAddFile
             <div className="flex flex-col gap-6"> {/* grid grid-cols-1 md:grid-cols-2 */}
               {folder.files.map(file => (
                 <FileCard
-                  theme={theme}
                   languageConfig={languageConfig}
                   key={file.id}
                   file={file}
+                  onClick={(fileId) => onClickFile(folder.id, fileId)}
                   onDelete={(fileId) => onDeleteFile(folder.id, fileId)}
                   onEdit={(file) => onEditFile(folder.id, file)} />
               ))}

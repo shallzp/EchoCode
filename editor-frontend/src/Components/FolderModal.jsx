@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react'
 import { Plus } from 'lucide-react'
+import { useTheme } from '../provider/ThemeProvider';
 
-const FolderModal = ({ theme, isOpen, onClose, editingFolder, onSave}) => {
+const FolderModal = ({ isOpen, onClose, editingFolder, onSave}) => {
+  const { theme } = useTheme();
 
   const [folderName, setFolderName] = useState(editingFolder?.title || '');
 

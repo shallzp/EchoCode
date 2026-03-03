@@ -1,9 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import { Code, Sun, Moon, Settings, Coffee, Home } from "lucide-react";
+import { useTheme } from "../provider/ThemeProvider";
 
-const BoxUI = ({ theme, isHome, isDarkMode, setIsDarkMode, children }) => {
+const BoxUI = ({ isHome, children }) => {
   
   const navigate = useNavigate();
+  const { theme, isDarkMode, setIsDarkMode } = useTheme();
 
   return (
     <div className={`h-screen bg-gradient-to-br ${theme.background} p-6 flex items-center justify-center`}>

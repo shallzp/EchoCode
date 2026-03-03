@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Plus } from 'lucide-react'
+import { useTheme } from '../provider/ThemeProvider';
 
 import CustomDropdown from './CustomDropdown';
 
@@ -11,7 +12,8 @@ const languageOptions = [
   { value: 'typescript', label: 'TypeScript' },
 ];
 
-const FileModal = ({ theme, isOpen, onClose, onSave, editingFile, folderName }) => {
+const FileModal = ({ isOpen, onClose, onSave, editingFile, folderName }) => {
+  const { theme } = useTheme();
   
   const [name, setName] = useState(editingFile?.name || '');
   const [language, setLanguage] = useState(editingFile?.language || '');
@@ -68,7 +70,6 @@ const FileModal = ({ theme, isOpen, onClose, onSave, editingFile, folderName }) 
             <label className={`block text-sm font-semibold ${theme.text} mb-2`}>Programming Language</label>
     
             <CustomDropdown
-                theme={theme}
                 value={language}
                 onChange={setLanguage}
                 options={languageOptions}

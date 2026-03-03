@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import { ChevronDown } from 'lucide-react';
+import { useTheme } from '../provider/ThemeProvider';
 
-const CustomDropdown = ({ theme, value, onChange, options, placeholder }) => {
+const CustomDropdown = ({ value, onChange, options, placeholder }) => {
+  const { theme } = useTheme();
   
   const [isOpen, setIsOpen] = useState(false);
   

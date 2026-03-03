@@ -1,11 +1,15 @@
 import { Trash2, Edit3 } from 'lucide-react';
+import { useTheme } from '../provider/ThemeProvider';
 
-const FileCard = ({ theme, languageConfig, file, onDelete, onEdit }) => {
+const FileCard = ({ languageConfig, file, onClick, onDelete, onEdit }) => {
+  const { theme } = useTheme();
 
   const config = languageConfig[file.language?.toLowerCase()] || languageConfig.default;
   
   return (
-    <div className={`relative group ${config.bg} ${config.border} border-2 rounded-xl p-4 ${theme.shadowLg} ${theme.hoverScale} ${theme.cardHover} transform transition-all duration-300 cursor-pointer`}>
+    <div 
+    onClick={() => onClick?.(file.id)}
+    className={`relative group ${config.bg} ${config.border} border-2 rounded-xl p-4 ${theme.shadowLg} ${theme.hoverScale} ${theme.cardHover} transform transition-all duration-300 cursor-pointer`}>
       {/* language badge */}
       <div className={`absolute -top-2 -right-2 bg-gradient-to-r ${config.color} text-white px-3 py-1 rounded-full text-xs font-semibold shadow-lg`}>
         {file.language}
