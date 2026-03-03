@@ -1,21 +1,22 @@
 import { useState, useContext } from 'react'
+import { useNavigate } from 'react-router-dom';
 import { Code, FolderPlus, Search, Clock } from 'lucide-react'
 
 import { getLanguageConfig } from '../config/Language'
-import { EditorContext } from '../provider/EditorProvider';
+import { FileContext } from '../provider/FileProvider';
+import { FolderContext } from '../provider/FolderProvider';
+import { useTheme } from '../provider/ThemeProvider';
 
 import FolderCard from './FolderCard';
 import FolderModal from './FolderModal';
 import FileModal from './FileModal';
 
-const HomePage = ({ theme, isDarkMode }) => {
-const {
-    folders, addFolder, editFolder, deleteFolder,
-    addFile, editFile, deleteFile,
-    currentFolderId, setCurrentFolderId,
-    editingFolder, setEditingFolder,
-    editingFile, setEditingFile,
-  } = useContext(EditorContext);
+const HomePage = () => {
+  const { folders, addFolder, editFolder, deleteFolder, editingFolder, setEditingFolder } = useContext(FolderContext);
+  const { addFile, editFile, deleteFile, currentFolderId, setCurrentFolderId, editingFile, setEditingFile } = useContext(FileContext);
+  const { theme, isDarkMode } = useTheme();
+  
+  const navigate = useNavigate();
 
   const langConfig = getLanguageConfig(isDarkMode, theme)
 
@@ -26,6 +27,7 @@ const {
   const filteredFolders = folders.filter(folder =>
     folder.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
 
   // Folder modal handlers
   const handleAddFolder = () => {
@@ -47,7 +49,6 @@ const {
     setOpenFolderModal(false);
     setEditingFolder(null);
   };
-
 
 
   // File modal handlers
@@ -72,6 +73,12 @@ const {
     setOpenFileModal(false);
     setCurrentFolderId(null);
     setEditingFile(null);
+  };
+
+
+  // Navigate to editor
+  const navigateToEditor = (folderId, fileId) => {
+    navigate(`/editor/${fileId}/${folderId}`);
   };
 
   return (
@@ -105,7 +112,6 @@ const {
       <>
         {openFolderModal && (
           <FolderModal
-            theme={theme}
             isOpen={openFolderModal}
             onClose={() => setOpenFolderModal(false)}
             onSave={handleSaveFolder}
@@ -117,7 +123,6 @@ const {
       <>
         {openFileModal && (
           <FileModal 
-            theme={theme}
             isOpen={openFileModal}
             onClose={() => setOpenFileModal(false)}
             onSave={handleSaveFile}
@@ -144,7 +149,7 @@ const {
             <Search className={`absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 ${theme.textMuted}`} />
             <input 
               type="text" 
-              placeholder="Search files..."
+              placeholder="Search folders..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className={`w-full pl-10 pr-4 py-3 ${theme.surface} ${theme.border} border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 ${theme.text}`}
@@ -164,12 +169,12 @@ const {
               <div className="flex flex-col gap-4">
                 {filteredFolders.map(folder => (
                   <FolderCard
-                    theme={theme}
                     languageConfig={langConfig}
                     key={folder.id}
                     folder={folder}
                     onEdit={() => handleEditFolder(folder)}
                     onDelete={() => deleteFolder(folder.id)}
+                    onClickFile={navigateToEditor}
                     onAddFile={() => handleAddFile(folder.id)}
                     onEditFile={handleEditFile}
                     onDeleteFile={deleteFile}
@@ -179,8 +184,7 @@ const {
             </div>
           </div>
         </div>
-      </div>
-      
+      </div> 
     </div>
   )
 }

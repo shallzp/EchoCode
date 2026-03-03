@@ -1,11 +1,16 @@
 import { useState } from "react"
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { FileText, Plus, Code, Star, Clock, Trash2, Edit3, Play, Save, Download, 
   Upload, Maximize, Copy, Terminal, Eye, EyeOff, RefreshCw, ArrowLeft, HomeIcon } from "lucide-react";
+import { useTheme } from "../provider/ThemeProvider";
 
 // import FileModal from './FileModal';
 
-const Editor = ({ theme }) => {
+const Editor = () => {
+  const { theme } = useTheme();
+
+  const params = useParams();
+  console.log(params);
 
   const navigate = useNavigate();
 
@@ -46,7 +51,6 @@ int main(){
             onClose={() => setOpenFileModal(false)}
             editingFile={editingFile}
             onSave={handleSaveFile}
-            theme={theme}
           />
         )}
       </> */}
@@ -63,7 +67,7 @@ int main(){
 
             <div className="flex items-center space-x-2">
               <FileText size={20} className="text-blue-500" />
-              <h2 className="text-lg font-semibold" onDoubleClick={() => handleEditFile({ id: 1, name: "HelloWorld.cpp" })}>HelloWorld.cpp</h2>
+              <h2 className="text-lg font-semibold">HelloWorld.cpp</h2>
             </div>
 
             <button className={`px-3 py-1 ${theme.accent} text-white rounded-lg text-sm font-medium transition-colors ${theme.accentHover}`}>
